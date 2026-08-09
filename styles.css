@@ -1,0 +1,71 @@
+/* ===== Base ===== */
+body {
+    font-family: 'Inter', sans-serif;
+    /* Previene el "bounce" indeseado en móviles */
+    overscroll-behavior-y: none;
+}
+
+/* Ocultar flechas de los inputs number para un look más limpio */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Transiciones suaves para los gradientes de texto */
+.gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* ===== Fondo temático (escritorio / estudio) ===== */
+.bg-academic {
+    background-color: #f8fafc;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+.dark .bg-academic {
+    background-color: #020617;
+    background-image: linear-gradient(rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.85)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+}
+
+/* ===== Drawer / menú lateral (estado abierto vía JS) ===== */
+#menu-drawer.open {
+    transform: translateX(0);
+}
+#menu-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Item de navegación activo */
+.nav-btn.active {
+    background-color: rgb(219 234 254);   /* blue-100 */
+    color: rgb(29 78 216);                 /* blue-700 */
+}
+.dark .nav-btn.active {
+    background-color: rgba(30, 58, 138, 0.4); /* blue-900/40 */
+    color: rgb(147 197 253);                  /* blue-300 */
+}
+
+/* ===== Aparición suave al cambiar de pantalla ===== */
+.screen {
+    animation: fadeIn 0.35s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .screen { animation: none; }
+    * { transition-duration: 0.01ms !important; }
+}
