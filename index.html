@@ -2,18 +2,27 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Calculadora de Puntaje Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            /* Previene el "bounce" indeseado en móviles */
+            overscroll-behavior-y: none; 
         }
         
         /* Ocultar flechas de los inputs number para un look más limpio */
@@ -25,151 +34,174 @@
         input[type=number] {
             -moz-appearance: textfield;
         }
+
+        /* Transiciones suaves para los gradientes */
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Fondo temático con imagen de fondo (escritorio/estudio) */
+        .bg-academic {
+            background-color: #f8fafc;
+            /* Imagen clara de escritorio con opacidad sutil para mantener el contraste */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+        .dark .bg-academic {
+            background-color: #020617; 
+            /* Imagen oscura de biblioteca con un filtro muy oscuro para no deslumbrar en la noche */
+            background-image: linear-gradient(rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.85)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        }
     </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 sm:p-8 bg-[#f8fafc] dark:bg-slate-900 transition-colors duration-300">
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-academic transition-colors duration-500">
 
     <!-- Botón Modo Oscuro -->
-    <button id="theme-toggle" type="button" class="fixed top-4 right-4 z-50 p-3 rounded-full bg-white dark:bg-slate-800 shadow-md border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all focus:outline-none focus:ring-4 focus:ring-slate-200 dark:focus:ring-slate-700">
-        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+    <button id="theme-toggle" type="button" class="fixed top-4 right-4 sm:top-6 sm:right-6 z-50 p-3 rounded-full bg-white/80 dark:bg-slate-800/80 backdrop-blur-md shadow-lg border border-slate-200/50 dark:border-slate-700/50 text-slate-500 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50">
+        <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+        <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
     </button>
 
-    <div class="w-full max-w-3xl space-y-6">
+    <!-- Contenedor principal tipo Glassmorphism para que la app resalte sobre el fondo -->
+    <div class="w-full max-w-2xl space-y-5 sm:space-y-6 mt-12 sm:mt-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl p-4 sm:p-8 rounded-[2rem] shadow-2xl border border-white/50 dark:border-slate-700/50">
         
         <!-- Título -->
-        <div class="text-center space-y-2 mb-8">
-            <h1 class="text-3xl sm:text-4xl font-black text-slate-800 dark:text-white tracking-tight transition-colors">Calculadora de Puntaje</h1>
-            <p class="text-slate-500 dark:text-slate-400 font-medium transition-colors">Ingresa tus datos para obtener tu nota final sobre 1000</p>
+        <div class="text-center space-y-2 mb-6 sm:mb-8 px-2">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-800 dark:text-white tracking-tight transition-colors">
+                Calculadora de Puntaje
+            </h1>
+            <p class="text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium transition-colors">
+                Ingresa tus datos para obtener tu nota sobre 1000
+            </p>
         </div>
 
         <!-- Tarjeta de Inputs -->
-        <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border border-slate-200/60 dark:border-slate-700 p-6 sm:p-8 transition-colors">
-            <h2 class="text-lg font-bold text-slate-700 dark:text-slate-200 mb-6 flex items-center gap-2 transition-colors">
-                <svg class="w-5 h-5 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                Datos Iniciales
-            </h2>
+        <div class="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 p-5 sm:p-8 transition-colors duration-300">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
                 <!-- Input Antecedentes -->
-                <div class="space-y-3">
-                    <label for="input-antecedentes" class="block text-sm font-semibold text-slate-500 dark:text-slate-400 text-center uppercase tracking-wide transition-colors">
-                        Antecedentes académicos <span class="text-slate-400 dark:text-slate-500 normal-case font-normal">(Max. 10)</span>
-                    </label>
-                    <div class="relative">
-                        <input type="number" id="input-antecedentes" 
-                            class="block w-full text-center text-4xl sm:text-5xl font-black text-[#12a49b] bg-slate-50 dark:bg-slate-900/50 border-2 border-slate-100 dark:border-slate-700 rounded-2xl py-4 transition-all duration-200 focus:outline-none focus:border-[#12a49b] focus:ring-4 focus:ring-[#12a49b]/10 focus:bg-white dark:focus:bg-slate-900" 
+                <div class="space-y-3 flex flex-col">
+                    <div class="flex justify-between items-center px-1">
+                        <label for="input-antecedentes" class="text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
+                            Antecedentes
+                        </label>
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300">Max 10</span>
+                    </div>
+                    <div class="relative group flex-1">
+                        <input type="number" id="input-antecedentes" inputmode="decimal"
+                            class="block w-full h-full text-center text-3xl sm:text-5xl font-black text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-600 rounded-xl sm:rounded-2xl py-4 sm:py-6 transition-all duration-300 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-slate-900 hover:border-blue-300 dark:hover:border-blue-500/50" 
                             value="8.14" step="0.01" min="0" max="10" placeholder="0.00">
                     </div>
                 </div>
 
-                <!-- Input Aciertos (Único) -->
-                <div class="space-y-3">
-                    <label for="input-aciertos" class="block text-sm font-semibold text-slate-500 dark:text-slate-400 text-center uppercase tracking-wide transition-colors">
-                        Aciertos de evaluación <span class="text-slate-400 dark:text-slate-500 normal-case font-normal">(Max. 80)</span>
-                    </label>
-                    <div class="relative">
-                        <input type="number" id="input-aciertos" 
-                            class="block w-full text-center text-4xl sm:text-5xl font-black text-[#f0ad4e] bg-slate-50 dark:bg-slate-900/50 border-2 border-slate-100 dark:border-slate-700 rounded-2xl py-4 transition-all duration-200 focus:outline-none focus:border-[#f0ad4e] focus:ring-4 focus:ring-[#f0ad4e]/10 focus:bg-white dark:focus:bg-slate-900" 
+                <!-- Input Aciertos -->
+                <div class="space-y-3 flex flex-col">
+                    <div class="flex justify-between items-center px-1">
+                        <label for="input-aciertos" class="text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wide">
+                            Aciertos
+                        </label>
+                        <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300">Max 80</span>
+                    </div>
+                    <div class="relative group flex-1">
+                        <input type="number" id="input-aciertos" inputmode="numeric"
+                            class="block w-full h-full text-center text-3xl sm:text-5xl font-black text-slate-900 dark:text-white bg-slate-50/50 dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-600 rounded-xl sm:rounded-2xl py-4 sm:py-6 transition-all duration-300 focus:outline-none focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/20 focus:bg-white dark:focus:bg-slate-900 hover:border-emerald-400 dark:hover:border-emerald-600/50" 
                             value="70" step="1" min="0" max="80" placeholder="0">
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-2 gap-3 sm:gap-6">
             
             <!-- Resultado Antecedentes (50%) -->
-            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-t-4 border-t-[#12a49b] border border-slate-200/60 dark:border-slate-700 p-6 sm:p-8 relative overflow-hidden group hover:shadow-md transition-all">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-[#12a49b]/5 rounded-full blur-xl group-hover:bg-[#12a49b]/10 transition-colors"></div>
+            <div class="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 p-4 sm:p-6 relative overflow-hidden group hover:shadow-md transition-all duration-300">
+                <!-- Decoración -->
+                <div class="absolute -right-6 -top-6 w-20 h-20 sm:w-24 sm:h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-colors duration-500"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-600"></div>
                 
-                <div class="text-xs font-bold text-[#12a49b] uppercase tracking-wider mb-1">Puntaje (50%) / 500</div>
-                <div class="text-sm text-slate-400 dark:text-slate-500 font-medium mb-4 transition-colors">Cálculo: Antecedentes × 50</div>
+                <div class="text-[10px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider mb-1">Valor (50%)</div>
+                <div class="hidden sm:block text-xs text-slate-400 dark:text-slate-500 font-medium mb-3">Antecedentes × 50</div>
                 
-                <div id="resultado-antecedentes" class="text-5xl sm:text-6xl font-black text-slate-800 dark:text-white tracking-tighter transition-colors">
-                    407
+                <div id="resultado-antecedentes" class="text-3xl sm:text-5xl font-black text-slate-800 dark:text-white tracking-tighter mt-2 sm:mt-0">
+                    0
                 </div>
             </div>
 
             <!-- Resultado Evaluación (50%) -->
-            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-sm border-t-4 border-t-[#f0ad4e] border border-slate-200/60 dark:border-slate-700 p-6 sm:p-8 relative overflow-hidden group hover:shadow-md transition-all">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-[#f0ad4e]/5 rounded-full blur-xl group-hover:bg-[#f0ad4e]/10 transition-colors"></div>
+            <div class="bg-white dark:bg-slate-800 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 p-4 sm:p-6 relative overflow-hidden group hover:shadow-md transition-all duration-300">
+                <!-- Decoración -->
+                <div class="absolute -right-6 -top-6 w-20 h-20 sm:w-24 sm:h-24 bg-emerald-600/10 rounded-full blur-2xl group-hover:bg-emerald-600/20 transition-colors duration-500"></div>
+                <div class="absolute top-0 left-0 w-full h-1 bg-emerald-600"></div>
                 
-                <div class="text-xs font-bold text-[#f0ad4e] uppercase tracking-wider mb-1">Puntaje (50%) / 500</div>
-                <div class="text-sm text-slate-400 dark:text-slate-500 font-medium mb-4 transition-colors">Cálculo: (Aciertos × 500) ÷ 80</div>
+                <div class="text-[10px] sm:text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider mb-1">Valor (50%)</div>
+                <div class="hidden sm:block text-xs text-slate-400 dark:text-slate-500 font-medium mb-3">(Aciertos × 500) ÷ 80</div>
                 
-                <div id="resultado-evaluacion" class="text-5xl sm:text-6xl font-black text-slate-800 dark:text-white tracking-tighter transition-colors">
-                    437.5
+                <div id="resultado-evaluacion" class="text-3xl sm:text-5xl font-black text-slate-800 dark:text-white tracking-tighter mt-2 sm:mt-0">
+                    0
                 </div>
             </div>
 
         </div>
 
-        <div class="bg-slate-900 dark:bg-black rounded-3xl shadow-xl p-8 sm:p-10 relative overflow-hidden mt-2 border border-transparent dark:border-slate-800 transition-colors">
-            <!-- Elementos decorativos de fondo -->
-            <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                <div class="absolute -top-[50%] -left-[10%] w-[50%] h-[150%] bg-gradient-to-br from-indigo-500/20 to-transparent rotate-12 transform origin-left"></div>
-                <div class="absolute -bottom-[50%] -right-[10%] w-[50%] h-[150%] bg-gradient-to-tl from-emerald-500/20 to-transparent -rotate-12 transform origin-right"></div>
-            </div>
-
-            <div class="relative z-10 flex flex-col items-center justify-center text-center">
-                <h3 class="text-slate-400 font-semibold text-lg sm:text-xl mb-2 flex items-center gap-2">
-                    <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+        <!-- Tarjeta Nota Final -->
+        <div class="bg-[#1a2138] rounded-2xl sm:rounded-3xl shadow-xl p-8 sm:p-12 relative mt-2 border-none transition-colors duration-300">
+            <div class="flex flex-col items-center justify-center text-center">
+                <h3 class="text-slate-300 font-bold text-xs sm:text-sm mb-2 sm:mb-3 uppercase tracking-[0.2em]">
                     Nota Final
                 </h3>
-                <div class="flex items-baseline gap-2">
-                    <span id="nota-final" class="text-7xl sm:text-8xl font-black text-white tracking-tighter drop-shadow-md">
-                        844.5
+                <div class="flex items-baseline gap-1 sm:gap-2">
+                    <span id="nota-final" class="text-7xl sm:text-8xl md:text-[7rem] font-black text-white tracking-tighter pb-1 leading-none">
+                        0
                     </span>
-                    <span class="text-2xl sm:text-3xl font-bold text-slate-500">/ 1000</span>
+                    <span class="text-2xl sm:text-3xl md:text-4xl font-bold text-[#475569]">/1000</span>
                 </div>
             </div>
         </div>
 
     </div>
 
-<script>
-    // Lógica para el toggle de modo oscuro
-    var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-    var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    <script>
+        // --- Lógica del Modo Oscuro ---
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const themeToggleBtn = document.getElementById('theme-toggle');
 
-    // Revisar preferencia de tema guardada o preferencia del sistema
-    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        themeToggleLightIcon.classList.remove('hidden');
-        document.documentElement.classList.add('dark');
-    } else {
-        themeToggleDarkIcon.classList.remove('hidden');
-    }
-
-    var themeToggleBtn = document.getElementById('theme-toggle');
-
-    themeToggleBtn.addEventListener('click', function() {
-        // Alternar iconos
-        themeToggleDarkIcon.classList.toggle('hidden');
-        themeToggleLightIcon.classList.toggle('hidden');
-
-        // Alternar tema y guardarlo
-        if (localStorage.getItem('color-theme')) {
-            if (localStorage.getItem('color-theme') === 'light') {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
-            }
-        } else {
+        function updateThemeIcons() {
             if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
+                themeToggleLightIcon.classList.remove('hidden');
+                themeToggleDarkIcon.classList.add('hidden');
             } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
+                themeToggleDarkIcon.classList.remove('hidden');
+                themeToggleLightIcon.classList.add('hidden');
             }
         }
-    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Referencias a los elementos del DOM
+        // Inicialización basada en preferencias
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        updateThemeIcons();
+
+        // Botón Toggle
+        themeToggleBtn.addEventListener('click', function() {
+            document.documentElement.classList.toggle('dark');
+            if (document.documentElement.classList.contains('dark')) {
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                localStorage.setItem('color-theme', 'light');
+            }
+            updateThemeIcons();
+        });
+
+        // --- Lógica de la Calculadora ---
+        document.addEventListener('DOMContentLoaded', function() {
             const inputAntecedentes = document.getElementById('input-antecedentes');
             const inputAciertos = document.getElementById('input-aciertos');
             
@@ -177,25 +209,19 @@
             const resultadoEvaluacion = document.getElementById('resultado-evaluacion');
             const notaFinal = document.getElementById('nota-final');
 
-            // Prevenir ingreso de letras, símbolos o signos negativos desde el teclado
+            // Prevenir ingreso de letras indeseadas
             inputAntecedentes.addEventListener('keydown', function(e) {
-                if (['-', '+', 'e', 'E'].includes(e.key)) {
-                    e.preventDefault();
-                }
+                if (['-', '+', 'e', 'E'].includes(e.key)) e.preventDefault();
             });
 
             inputAciertos.addEventListener('keydown', function(e) {
-                // En aciertos (es sobre 80 preguntas enteras), no se permiten decimales ni símbolos
-                if (['-', '+', 'e', 'E', '.', ','].includes(e.key)) {
-                    e.preventDefault();
-                }
+                if (['-', '+', 'e', 'E', '.', ','].includes(e.key)) e.preventDefault();
             });
 
-            // Controlar el valor en tiempo real (por si pegan un texto o exceden el límite)
+            // Control de valores dinámicos
             inputAntecedentes.addEventListener('input', function() {
                 let valor = parseFloat(this.value);
                 if (valor < 0) this.value = 0;
-                // Evitar que pasen de 10 visualmente en el input
                 if (valor > 10) this.value = 10; 
                 calcularPuntajes();
             });
@@ -203,34 +229,29 @@
             inputAciertos.addEventListener('input', function() {
                 let valor = parseInt(this.value);
                 if (valor < 0) this.value = 0;
-                // Evitar que pasen de 80 visualmente en el input
                 if (valor > 80) this.value = 80;
                 calcularPuntajes();
             });
 
-            // Función principal de cálculo
+            // Función de cálculo
             function calcularPuntajes() {
-                // Obtener valores (o 0 si están vacíos)
                 let antecedentes = parseFloat(inputAntecedentes.value) || 0;
                 let aciertos = parseInt(inputAciertos.value) || 0;
 
-                // 1. Calcular Puntaje Antecedentes (x 50)
+                // 1. Antecedentes (x 50)
                 const calcAntecedentes = antecedentes * 50;
-                const displayAntecedentes = Number.isInteger(calcAntecedentes) ? calcAntecedentes : calcAntecedentes.toFixed(2);
-                resultadoAntecedentes.textContent = displayAntecedentes;
+                resultadoAntecedentes.textContent = Number.isInteger(calcAntecedentes) ? calcAntecedentes : calcAntecedentes.toFixed(2);
 
-                // 2. Calcular Puntaje Evaluación ((Aciertos x 500) / 80)
+                // 2. Evaluación ((Aciertos x 500) / 80)
                 const calcEvaluacion = (aciertos * 500) / 80;
-                const displayEvaluacion = Number.isInteger(calcEvaluacion) ? calcEvaluacion : calcEvaluacion.toFixed(2);
-                resultadoEvaluacion.textContent = displayEvaluacion;
+                resultadoEvaluacion.textContent = Number.isInteger(calcEvaluacion) ? calcEvaluacion : calcEvaluacion.toFixed(2);
 
-                // 3. Calcular Nota Final (Suma de los dos anteriores)
+                // 3. Nota Final
                 const totalFinal = calcAntecedentes + calcEvaluacion;
-                const displayTotal = Number.isInteger(totalFinal) ? totalFinal : totalFinal.toFixed(2);
-                notaFinal.textContent = displayTotal;
+                notaFinal.textContent = Number.isInteger(totalFinal) ? totalFinal : totalFinal.toFixed(2);
             }
 
-            // Ejecutar el cálculo al cargar la página por primera vez
+            // Ejecutar inicial
             calcularPuntajes();
         });
     </script>
